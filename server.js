@@ -9,12 +9,11 @@ const upload = multer({ dest: 'uploads/' });
 
 function logError(location, err) {
   console.error(`[ERROR][${location}] ${(err && err.stack) ? err.stack : err}`);
-  // Optionally, write to a file:
   fs.appendFileSync('api-error.log', `[${new Date().toISOString()}] [${location}] ${err}\n`);
 }
 
 app.post('/convert', upload.single('file'), async (req, res) => {
-  const inputPath = req.file?.path;
+  const inputPath = req.file ? req.file.path : null;  // Changed: No optional chaining
   const outputPath = path.join(__dirname, 'output.zip');
 
   if (!inputPath) {
@@ -29,7 +28,6 @@ app.post('/convert', upload.single('file'), async (req, res) => {
     zipStream.on('error', err => {
       logError('tarToZip', err);
       res.status(500).json({ error: 'Conversion failed', details: err.message });
-      // Cleanup
       fs.unlink(inputPath, () => {});
       if (fs.existsSync(outputPath)) fs.unlink(outputPath, () => {});
     });
@@ -62,11 +60,11 @@ app.post('/convert', upload.single('file'), async (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  // Global error handler
   logError('express', err);
   res.status(500).json({ error: 'Global error handler', details: err.message });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('API running on port', process.env.PORT || 3000);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log('API running on port', PORT);
 });
