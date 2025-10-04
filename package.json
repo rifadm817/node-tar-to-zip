@@ -2,7 +2,7 @@
   "name": "tar-to-zip-api",
   "version": "3.0.0",
   "description": "API for converting tar and tar.gz archives to zip",
-  "main": "server.js",
+  "main": "lib/tar-to-zip.js",
   "bin": {
     "tar2zip": "bin/tar-to-zip.js",
     "tar-to-zip": "bin/tar-to-zip.js"
