@@ -34,7 +34,7 @@
     "express"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   },
   "author": "Your Name",
   "license": "MIT",
