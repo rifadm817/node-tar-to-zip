@@ -3,7 +3,6 @@ const multer = require('multer');
 const tarToZip = require('./lib/tar-to-zip');  // ✅ Changed: Use local library file
 const fs = require('fs');
 const path = require('path');
-
 const app = express();
 const upload = multer({ dest: 'uploads/' });
 
@@ -50,7 +49,7 @@ app.post('/convert', upload.single('file'), async (req, res) => {
       if (fs.existsSync(outputPath)) fs.unlink(outputPath, () => {});
     });
 
-    zipStream.pipe(writeStream);
+    zipStream.getStream().pipe(writeStream);
   } catch (err) {
     logError('catch', err);
     res.status(500).json({ error: 'Unexpected error', details: err.message });
