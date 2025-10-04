@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const tarToZip = require('tar-to-zip');
+const tarToZip = require('./lib/tar-to-zip');  // ✅ Changed: Use local library file
 const fs = require('fs');
 const path = require('path');
 
@@ -13,7 +13,7 @@ function logError(location, err) {
 }
 
 app.post('/convert', upload.single('file'), async (req, res) => {
-  const inputPath = req.file ? req.file.path : null;  // Changed: No optional chaining
+  const inputPath = req.file ? req.file.path : null;
   const outputPath = path.join(__dirname, 'output.zip');
 
   if (!inputPath) {
